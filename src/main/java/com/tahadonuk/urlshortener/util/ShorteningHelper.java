@@ -12,7 +12,7 @@ public class ShorteningHelper {
         StringBuilder shortUrl = new StringBuilder();
         int mod;
         while(id > 0) {
-            mod = (int) id % BASE;
+            mod = (int) (id % BASE);
             shortUrl.insert(0,ALPHABET.charAt(mod));
             id = id / BASE;
         }

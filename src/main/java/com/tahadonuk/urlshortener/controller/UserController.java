@@ -17,8 +17,7 @@ public class UserController {
 
     @PostMapping(path = "/user/signup")
     @ResponseBody
-    public ResponseEntity<Object> signUp(@RequestBody User user, HttpServletRequest request) {
-        System.out.println(request.getRequestURL());
+    public ResponseEntity<Object> signUp(@RequestBody User user) {
         try {
             userService.saveUser(user);
             return ResponseEntity.ok().body(user);

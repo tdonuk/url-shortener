@@ -1,5 +1,7 @@
 package com.tahadonuk.urlshortener.data.entity;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -12,14 +14,25 @@ public class User {
     private long userId;
 
     @Column(name = "USERNAME", unique = true)
+    @NotNull
     private String username;
 
     @Column(name = "PASSWORD")
+    @NotNull
     private char[] password;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ID")
     private List<URLEntity> urls;
+
+    public User(String username, char[] password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public User() {
+
+    }
 
     public long getUserId() {
         return userId;

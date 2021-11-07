@@ -1,6 +1,7 @@
 package com.tahadonuk.urlshortener.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 
@@ -14,6 +15,7 @@ public class URLEntity {
     private long urlId;
 
     @Column(name = "LONG_URL")
+    @NotNull
     private String  url;
 
     @Column(name = "SHORTENED_URL")
@@ -23,6 +25,15 @@ public class URLEntity {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JsonIgnore // this is required to prevent it from returning a recursive json loop
     private User user;
+
+    public URLEntity(String url, User user) {
+        this.url = url;
+        this.user = user;
+    }
+
+    public URLEntity() {
+
+    }
 
     public User getUser() {
         return user;

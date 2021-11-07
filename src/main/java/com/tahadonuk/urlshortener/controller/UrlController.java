@@ -1,12 +1,12 @@
 package com.tahadonuk.urlshortener.controller;
 
 import com.tahadonuk.urlshortener.data.entity.URLEntity;
-import com.tahadonuk.urlshortener.exception.URLConflictException;
 import com.tahadonuk.urlshortener.service.URLService;
 import com.tahadonuk.urlshortener.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -22,8 +22,6 @@ public class UrlController {
     @PostMapping(path = "/user/{userId}/url/create")
     @ResponseBody
     public ResponseEntity<Object> createUrl(@PathVariable long userId, @RequestBody String longUrl) {
-        System.out.println(longUrl);
-
         try {
             URLEntity url = new URLEntity();
             url.setUser(userService.getById(userId));
@@ -66,9 +64,10 @@ public class UrlController {
     }
 
     @GetMapping(path = "/s/{shortenedUrl}")
-    public ResponseEntity<Object> redirect(@PathVariable String shortenedUrl) {
+    public Object redirect(@PathVariable String shortenedUrl) {
         try {
-            return ResponseEntity.ok().body(urlService.getByShortenedUrl(shortenedUrl).getUrl());
+            String url = urlService.getByShortenedUrl(shortenedUrl).getUrl();
+            return new ModelAndView("redirect:" + url);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
